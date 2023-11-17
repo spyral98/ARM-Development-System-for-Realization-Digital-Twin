@@ -1,0 +1,568 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 4 4
+Title "STM32 Edge Computing Device"
+Date "2021-09-03"
+Rev "1.2"
+Comp "University of Patras"
+Comment1 "Designer: Alysandratos Spyridon"
+Comment2 ""
+Comment3 "maintenance of stepper motor and realization of digital twin."
+Comment4 "Module based PCB design around an STM32L4 μC for predictive"
+$EndDescr
+$Comp
+L Device:Fuse_Small F1
+U 1 1 60F72807
+P 4200 2600
+F 0 "F1" H 4200 2785 50  0000 C CNN
+F 1 "SF-0603HIA100M-2" H 4200 2694 50  0000 C CNN
+F 2 "Fuse:Fuse_0603_1608Metric" H 4200 2600 50  0001 C CNN
+F 3 "~" H 4200 2600 50  0001 C CNN
+F 4 "SF-0603HIA100M-2" H 4200 2600 50  0001 C CNN "Manufacturer_Part_Number"
+F 5 "652-SF-0603HIA100M-2" H 4200 2600 50  0001 C CNN "Mouser Part Number"
+	1    4200 2600
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:Ferrite_Bead_Small FB1
+U 1 1 60F74893
+P 5150 2600
+F 0 "FB1" V 4913 2600 50  0000 C CNN
+F 1 "FBTH1608HE101-T" V 5004 2600 50  0000 C CNN
+F 2 "Inductor_SMD:L_0603_1608Metric" V 5080 2600 50  0001 C CNN
+F 3 "~" H 5150 2600 50  0001 C CNN
+F 4 "FBTH1608HE101-T" H 5150 2600 50  0001 C CNN "Manufacturer_Part_Number"
+F 5 "963-FBTH1608HE101-T" H 5150 2600 50  0001 C CNN "Mouser Part Number"
+	1    5150 2600
+	0    1    1    0   
+$EndComp
+$Comp
+L power:GND #PWR05
+U 1 1 60F787B2
+P 2200 2800
+F 0 "#PWR05" H 2200 2550 50  0001 C CNN
+F 1 "GND" H 2205 2627 50  0000 C CNN
+F 2 "" H 2200 2800 50  0001 C CNN
+F 3 "" H 2200 2800 50  0001 C CNN
+	1    2200 2800
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C_Small C1
+U 1 1 60F8C0EB
+P 5650 2950
+F 0 "C1" H 5450 3000 50  0000 L CNN
+F 1 "10u" H 5400 2900 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric" H 5650 2950 50  0001 C CNN
+F 3 "~" H 5650 2950 50  0001 C CNN
+F 4 "C0805C106K3PACTU" H 5650 2950 50  0001 C CNN "Manufacturer_Part_Number"
+F 5 "80-C0805C106K3P" H 5650 2950 50  0001 C CNN "Mouser Part Number"
+	1    5650 2950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5650 2850 5650 2600
+Wire Wire Line
+	5650 3050 5650 3150
+$Comp
+L power:GND #PWR07
+U 1 1 60F8F46E
+P 5650 3150
+F 0 "#PWR07" H 5650 2900 50  0001 C CNN
+F 1 "GND" H 5655 2977 50  0000 C CNN
+F 2 "" H 5650 3150 50  0001 C CNN
+F 3 "" H 5650 3150 50  0001 C CNN
+	1    5650 3150
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3.3V #PWR04
+U 1 1 60F91C37
+P 7350 2250
+F 0 "#PWR04" H 7350 2100 50  0001 C CNN
+F 1 "+3.3V" H 7365 2423 50  0000 C CNN
+F 2 "" H 7350 2250 50  0001 C CNN
+F 3 "" H 7350 2250 50  0001 C CNN
+	1    7350 2250
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1900 2700 2200 2700
+Wire Wire Line
+	2200 2700 2200 2800
+$Comp
+L power:+5V #PWR01
+U 1 1 6112FC76
+P 3250 2000
+F 0 "#PWR01" H 3250 1850 50  0001 C CNN
+F 1 "+5V" H 3265 2173 50  0000 C CNN
+F 2 "" H 3250 2000 50  0001 C CNN
+F 3 "" H 3250 2000 50  0001 C CNN
+	1    3250 2000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7350 2250 7350 2600
+Text Notes 800  950  0    197  ~ 39
+Power
+Text Notes 1250 1650 0    118  ~ 24
+3.3V LDO
+Text Notes 8600 1650 0    118  ~ 24
+Power LED
+Wire Notes Line
+	8600 1700 8600 3200
+Wire Notes Line
+	9450 3200 8600 3200
+Wire Notes Line
+	9450 1700 9450 3200
+Wire Notes Line
+	8600 1700 9450 1700
+Wire Wire Line
+	8850 2500 8850 2350
+Wire Wire Line
+	8850 2850 8850 2700
+$Comp
+L power:GND #PWR015
+U 1 1 60F98828
+P 8850 2850
+F 0 "#PWR015" H 8850 2600 50  0001 C CNN
+F 1 "GND" H 8855 2677 50  0000 C CNN
+F 2 "" H 8850 2850 50  0001 C CNN
+F 3 "" H 8850 2850 50  0001 C CNN
+	1    8850 2850
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R_Small R1
+U 1 1 60F96D29
+P 8850 2600
+F 0 "R1" H 8909 2646 50  0000 L CNN
+F 1 "1k" H 8909 2555 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" H 8850 2600 50  0001 C CNN
+F 3 "~" H 8850 2600 50  0001 C CNN
+F 4 "CRCW06031K00JNEAC" H 8850 2600 50  0001 C CNN "Manufacturer_Part_Number"
+F 5 "71-CRCW06031K00JNEAC" H 8850 2600 50  0001 C CNN "Mouser Part Number"
+	1    8850 2600
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:LED_Small D3
+U 1 1 60F947B1
+P 8850 2250
+F 0 "D3" V 8896 2180 50  0000 R CNN
+F 1 "AP2012MGC" V 8805 2180 50  0000 R CNN
+F 2 "LED_SMD:LED_0805_2012Metric" V 8850 2250 50  0001 C CNN
+F 3 "~" V 8850 2250 50  0001 C CNN
+F 4 "AP2012MGC" H 8850 2250 50  0001 C CNN "Manufacturer_Part_Number"
+F 5 "604-AP2012MGC" H 8850 2250 50  0001 C CNN "Mouser Part Number"
+	1    8850 2250
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x02 J1
+U 1 1 6141B527
+P 1700 2600
+F 0 "J1" H 1700 2850 50  0000 C CNN
+F 1 "TSW-202-07-F-S" H 1650 2750 50  0000 C CNN
+F 2 "SamacSys_Parts:HDRV2W64P254X508_1X2_762X241X838P" H 1700 2600 50  0001 C CNN
+F 3 "~" H 1700 2600 50  0001 C CNN
+F 4 "TSW-202-07-F-S" H 1700 2600 50  0001 C CNN "Manufacturer_Part_Number"
+F 5 "200-TSW20207FS" H 1700 2600 50  0001 C CNN "Mouser Part Number"
+	1    1700 2600
+	-1   0    0    -1  
+$EndComp
+Wire Wire Line
+	4300 2600 5050 2600
+$Comp
+L power:+3.3V #PWR011
+U 1 1 61311A18
+P 8850 2000
+F 0 "#PWR011" H 8850 1850 50  0001 C CNN
+F 1 "+3.3V" H 8865 2173 50  0000 C CNN
+F 2 "" H 8850 2000 50  0001 C CNN
+F 3 "" H 8850 2000 50  0001 C CNN
+	1    8850 2000
+	1    0    0    -1  
+$EndComp
+Text Notes 6950 4200 0    118  ~ 24
+USB
+Wire Notes Line
+	9700 4250 6950 4250
+Wire Notes Line
+	9700 6050 9700 4250
+Wire Notes Line
+	6950 6050 9700 6050
+Wire Notes Line
+	6950 4250 6950 6050
+Wire Wire Line
+	8600 4600 8600 4550
+$Comp
+L power:+5V #PWR03
+U 1 1 611839AC
+P 7750 4750
+F 0 "#PWR03" H 7750 4600 50  0001 C CNN
+F 1 "+5V" H 7765 4923 50  0000 C CNN
+F 2 "" H 7750 4750 50  0001 C CNN
+F 3 "" H 7750 4750 50  0001 C CNN
+	1    7750 4750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9200 5700 8700 5700
+Wire Wire Line
+	8200 5150 7600 5150
+Wire Wire Line
+	8600 5700 8600 5750
+$Comp
+L SamacSys_Parts:CM1231-02SO U2
+U 1 1 6114B2C3
+P 8500 5700
+F 0 "U2" V 8850 5300 50  0000 C CNN
+F 1 "CM1231-02SO" V 8750 5100 50  0000 C CNN
+F 2 "SamacSys_Parts:SOT95P280X145-6N" H 9450 5800 50  0001 L CNN
+F 3 "https://componentsearchengine.com/Datasheets/1/CM1231-02SO.pdf" H 9450 5700 50  0001 L CNN
+F 4 "ON Semiconductor CM1231-02SO Dual Uni-Directional ESD Protection Array, 225mW peak, 6-Pin SOT-23" H 9450 5600 50  0001 L CNN "Description"
+F 5 "1.45" H 9450 5500 50  0001 L CNN "Height"
+F 6 "748-CM1231-02SO" H 9450 5400 50  0001 L CNN "Mouser Part Number"
+F 7 "https://www.mouser.com/Search/Refine.aspx?Keyword=748-CM1231-02SO" H 9450 5300 50  0001 L CNN "Mouser Price/Stock"
+F 8 "ON Semiconductor" H 9450 5200 50  0001 L CNN "Manufacturer_Name"
+F 9 "CM1231-02SO" H 9450 5100 50  0001 L CNN "Manufacturer_Part_Number"
+	1    8500 5700
+	0    -1   -1   0   
+$EndComp
+$Comp
+L power:+5V #PWR02
+U 1 1 6112524F
+P 8600 4550
+F 0 "#PWR02" H 8600 4400 50  0001 C CNN
+F 1 "+5V" H 8615 4723 50  0000 C CNN
+F 2 "" H 8600 4550 50  0001 C CNN
+F 3 "" H 8600 4550 50  0001 C CNN
+	1    8600 4550
+	1    0    0    -1  
+$EndComp
+Text GLabel 9200 5700 2    50   Input ~ 0
+USB_D+
+Text GLabel 9200 4600 2    50   Input ~ 0
+USB_D-
+NoConn ~ 7200 5550
+NoConn ~ 7600 5350
+Wire Wire Line
+	7750 4950 7750 4750
+Wire Wire Line
+	7600 4950 7750 4950
+$Comp
+L power:GND #PWR09
+U 1 1 60F709FC
+P 8600 5750
+F 0 "#PWR09" H 8600 5500 50  0001 C CNN
+F 1 "GND" H 8605 5577 50  0000 C CNN
+F 2 "" H 8600 5750 50  0001 C CNN
+F 3 "" H 8600 5750 50  0001 C CNN
+	1    8600 5750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7300 5550 7300 5650
+$Comp
+L power:GND #PWR06
+U 1 1 60F6FFBF
+P 7300 5650
+F 0 "#PWR06" H 7300 5400 50  0001 C CNN
+F 1 "GND" H 7305 5477 50  0000 C CNN
+F 2 "" H 7300 5650 50  0001 C CNN
+F 3 "" H 7300 5650 50  0001 C CNN
+	1    7300 5650
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:USB_B_Micro J2
+U 1 1 60F64714
+P 7300 5150
+F 0 "J2" H 7300 5600 50  0000 C CNN
+F 1 "10118194-0001LF" H 7350 5500 50  0000 C CNN
+F 2 "Connector_USB:USB_Micro-B_Amphenol_10118194_Horizontal" H 7450 5100 50  0001 C CNN
+F 3 "~" H 7450 5100 50  0001 C CNN
+F 4 "10118194-0001LF" H 7300 5150 50  0001 C CNN "Manufacturer_Part_Number"
+F 5 "649-10118194-0001LF" H 7300 5150 50  0001 C CNN "Mouser Part Number"
+	1    7300 5150
+	1    0    0    -1  
+$EndComp
+Wire Notes Line
+	1250 4800 5300 4800
+Wire Notes Line
+	1250 5850 5300 5850
+Wire Notes Line
+	5300 4800 5300 5850
+Wire Wire Line
+	2850 5300 3550 5300
+Text Notes 1250 4750 0    118  ~ 24
+Motor Supply
+Wire Notes Line
+	1250 4800 1250 5850
+$Comp
+L Device:Fuse_Small F2
+U 1 1 610ECF5E
+P 2750 5300
+F 0 "F2" H 2750 5485 50  0000 C CNN
+F 1 "SF-0603HIA300M-2" H 2750 5394 50  0000 C CNN
+F 2 "Fuse:Fuse_0603_1608Metric" H 2750 5300 50  0001 C CNN
+F 3 "~" H 2750 5300 50  0001 C CNN
+F 4 "SF-0603HIA350M-2" H 2750 5300 50  0001 C CNN "Manufacturer_Part_Number"
+F 5 "652-SF-0603HIA350M-2" H 2750 5300 50  0001 C CNN "Mouser Part Number"
+	1    2750 5300
+	1    0    0    -1  
+$EndComp
+$Comp
+L SamacSys_Parts:DMPH4015SSS-13 U3
+U 1 1 610C98DC
+P 4550 5300
+F 0 "U3" H 5050 5565 50  0000 C CNN
+F 1 "DMPH4015SSS-13" H 5050 5474 50  0000 C CNN
+F 2 "SamacSys_Parts:SOIC127P600X170-8N" H 5400 5400 50  0001 L CNN
+F 3 "https://www.diodes.com/assets/Datasheets/DMPH4015SSS.pdf" H 5400 5300 50  0001 L CNN
+F 4 "MOSFET MOSFET BVDSS: 31V-40V" H 5400 5200 50  0001 L CNN "Description"
+F 5 "1.7" H 5400 5100 50  0001 L CNN "Height"
+F 6 "621-DMPH4015SSS-13" H 5400 5000 50  0001 L CNN "Mouser Part Number"
+F 7 "https://www.mouser.co.uk/ProductDetail/Diodes-Incorporated/DMPH4015SSS-13/?qs=AQlKX63v8Rtmcz6ASXQAFA%3D%3D" H 5400 4900 50  0001 L CNN "Mouser Price/Stock"
+F 8 "Diodes Inc." H 5400 4800 50  0001 L CNN "Manufacturer_Name"
+F 9 "DMPH4015SSS-13" H 5400 4700 50  0001 L CNN "Manufacturer_Part_Number"
+	1    4550 5300
+	-1   0    0    -1  
+$EndComp
+$Comp
+L power:Vdrive #PWR012
+U 1 1 6138704D
+P 5050 5150
+F 0 "#PWR012" H 4850 5000 50  0001 C CNN
+F 1 "Vdrive" H 5065 5323 50  0000 C CNN
+F 2 "" H 5050 5150 50  0001 C CNN
+F 3 "" H 5050 5150 50  0001 C CNN
+	1    5050 5150
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR013
+U 1 1 60F7DD5E
+P 2150 5500
+F 0 "#PWR013" H 2150 5250 50  0001 C CNN
+F 1 "GND" H 2155 5327 50  0000 C CNN
+F 2 "" H 2150 5500 50  0001 C CNN
+F 3 "" H 2150 5500 50  0001 C CNN
+	1    2150 5500
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2150 5400 2150 5500
+Wire Wire Line
+	1900 5400 2150 5400
+Text Notes 1650 2200 0    39   ~ 0
+Vin = 4V - 11V (Thermal Limit)
+$Comp
+L SamacSys_Parts:TL1963A-33KTTR U1
+U 1 1 6110FD10
+P 5800 2550
+F 0 "U1" H 6500 2815 50  0000 C CNN
+F 1 "TL1963A-33KTTR" H 6500 2724 50  0000 C CNN
+F 2 "SamacSys_Parts:TL1963A33KTTR" H 7050 2650 50  0001 L CNN
+F 3 "http://www.ti.com/lit/gpn/tl1963a" H 7050 2550 50  0001 L CNN
+F 4 "1.5-A Low-Noise Fast-Transient-Response Low-Dropout Regulator" H 7050 2450 50  0001 L CNN "Description"
+F 5 "4.83" H 7050 2350 50  0001 L CNN "Height"
+F 6 "595-TL1963A-33KTTR" H 7050 2250 50  0001 L CNN "Mouser Part Number"
+F 7 "https://www.mouser.co.uk/ProductDetail/Texas-Instruments/TL1963A-33KTTR?qs=ghbYPfulOXut4lG9tU%252BL5Q%3D%3D" H 7050 2150 50  0001 L CNN "Mouser Price/Stock"
+F 8 "Texas Instruments" H 7050 2050 50  0001 L CNN "Manufacturer_Name"
+F 9 "TL1963A-33KTTR" H 7050 1950 50  0001 L CNN "Manufacturer_Part_Number"
+	1    5800 2550
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5800 2700 5800 2600
+Connection ~ 5800 2600
+Wire Wire Line
+	6400 3250 6550 3250
+$Comp
+L power:GND #PWR010
+U 1 1 6113D5ED
+P 6400 3350
+F 0 "#PWR010" H 6400 3100 50  0001 C CNN
+F 1 "GND" H 6405 3177 50  0000 C CNN
+F 2 "" H 6400 3350 50  0001 C CNN
+F 3 "" H 6400 3350 50  0001 C CNN
+	1    6400 3350
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6400 3350 6400 3250
+Connection ~ 6400 3250
+$Comp
+L Device:C_Small C2
+U 1 1 6113FBE5
+P 7350 2950
+F 0 "C2" H 7442 2996 50  0000 L CNN
+F 1 "10u" H 7442 2905 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric" H 7350 2950 50  0001 C CNN
+F 3 "~" H 7350 2950 50  0001 C CNN
+F 4 "C0805C106K3PACTU" H 7350 2950 50  0001 C CNN "Manufacturer_Part_Number"
+F 5 "80-C0805C106K3P" H 7350 2950 50  0001 C CNN "Mouser Part Number"
+	1    7350 2950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7350 2850 7350 2600
+Wire Wire Line
+	7350 3050 7350 3150
+$Comp
+L power:GND #PWR08
+U 1 1 6113FBED
+P 7350 3150
+F 0 "#PWR08" H 7350 2900 50  0001 C CNN
+F 1 "GND" H 7355 2977 50  0000 C CNN
+F 2 "" H 7350 3150 50  0001 C CNN
+F 3 "" H 7350 3150 50  0001 C CNN
+	1    7350 3150
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7200 2600 7350 2600
+Wire Wire Line
+	7200 2700 7200 2600
+Connection ~ 7200 2600
+Connection ~ 7350 2600
+Wire Wire Line
+	5650 2600 5800 2600
+Wire Wire Line
+	5250 2600 5650 2600
+Connection ~ 5650 2600
+Wire Notes Line
+	7750 1700 7750 3650
+Wire Notes Line
+	7750 3650 1250 3650
+Wire Notes Line
+	1250 1700 1250 3650
+Wire Notes Line
+	1250 1700 7750 1700
+$Comp
+L Connector_Generic:Conn_01x02 J3
+U 1 1 614208CC
+P 1700 5300
+F 0 "J3" H 1700 5550 50  0000 C CNN
+F 1 "TSW-202-07-F-S" H 1650 5450 50  0000 C CNN
+F 2 "SamacSys_Parts:HDRV2W64P254X508_1X2_762X241X838P" H 1700 5300 50  0001 C CNN
+F 3 "~" H 1700 5300 50  0001 C CNN
+F 4 "TSW-202-07-F-S" H 1700 5300 50  0001 C CNN "Manufacturer_Part_Number"
+F 5 "200-TSW20207FS" H 1700 5300 50  0001 C CNN "Mouser Part Number"
+	1    1700 5300
+	-1   0    0    -1  
+$EndComp
+$Comp
+L SamacSys_Parts:RSX101MM-30TFTR D1
+U 1 1 6119516C
+P 3200 2250
+F 0 "D1" V 3300 2100 50  0000 R CNN
+F 1 "RSX101MM-30TFTR" V 3200 2100 50  0000 R CNN
+F 2 "SamacSys_Parts:RSX101MM30TFTR" H 3700 2400 50  0001 L CNN
+F 3 "https://componentsearchengine.com/Datasheets/2/RSX101MM-30TFTR.pdf" H 3700 2300 50  0001 L CNN
+F 4 "Schottky Diodes & Rectifiers 30V VR 1A 0.39V VF PMDU; SOD-123FL" H 3700 2200 50  0001 L CNN "Description"
+F 5 "0.9" H 3700 2100 50  0001 L CNN "Height"
+F 6 "755-RSX101MM-30TFTR" H 3700 2000 50  0001 L CNN "Mouser Part Number"
+F 7 "https://www.mouser.co.uk/ProductDetail/ROHM-Semiconductor/RSX101MM-30TFTR?qs=4v%252BiZTmLVHFOHbPnbPnJ9Q%3D%3D" H 3700 1900 50  0001 L CNN "Mouser Price/Stock"
+F 8 "ROHM Semiconductor" H 3700 1800 50  0001 L CNN "Manufacturer_Name"
+F 9 "RSX101MM-30TFTR" H 3700 1700 50  0001 L CNN "Manufacturer_Part_Number"
+	1    3200 2250
+	0    -1   -1   0   
+$EndComp
+$Comp
+L SamacSys_Parts:RSX101MM-30TFTR D2
+U 1 1 6119860C
+P 2650 2650
+F 0 "D2" H 2650 2400 50  0000 C CNN
+F 1 "RSX101MM-30TFTR" H 2650 2500 50  0000 C CNN
+F 2 "SamacSys_Parts:RSX101MM30TFTR" H 3150 2800 50  0001 L CNN
+F 3 "https://componentsearchengine.com/Datasheets/2/RSX101MM-30TFTR.pdf" H 3150 2700 50  0001 L CNN
+F 4 "Schottky Diodes & Rectifiers 30V VR 1A 0.39V VF PMDU; SOD-123FL" H 3150 2600 50  0001 L CNN "Description"
+F 5 "0.9" H 3150 2500 50  0001 L CNN "Height"
+F 6 "755-RSX101MM-30TFTR" H 3150 2400 50  0001 L CNN "Mouser Part Number"
+F 7 "https://www.mouser.co.uk/ProductDetail/ROHM-Semiconductor/RSX101MM-30TFTR?qs=4v%252BiZTmLVHFOHbPnbPnJ9Q%3D%3D" H 3150 2300 50  0001 L CNN "Mouser Price/Stock"
+F 8 "ROHM Semiconductor" H 3150 2200 50  0001 L CNN "Manufacturer_Name"
+F 9 "RSX101MM-30TFTR" H 3150 2100 50  0001 L CNN "Manufacturer_Part_Number"
+	1    2650 2650
+	-1   0    0    1   
+$EndComp
+Text Label 7650 5150 0    39   ~ 0
+USB_CONN_D+
+Text Label 7650 5250 0    39   ~ 0
+USB_CONN_D-
+Wire Wire Line
+	1900 2600 2550 2600
+Wire Wire Line
+	2750 2600 3250 2600
+Wire Wire Line
+	3250 2150 3250 2000
+Wire Wire Line
+	3250 2350 3250 2600
+Connection ~ 3250 2600
+Wire Wire Line
+	3250 2600 4100 2600
+Wire Wire Line
+	5050 5150 5050 5300
+Wire Wire Line
+	5050 5300 4550 5300
+Wire Wire Line
+	8850 2150 8850 2000
+Wire Wire Line
+	8850 4600 8700 4600
+Wire Wire Line
+	9050 4600 9200 4600
+$Comp
+L Device:R_Small R0
+U 1 1 6129BFF0
+P 8950 4600
+F 0 "R0" V 8754 4600 50  0000 C CNN
+F 1 "0" V 8845 4600 50  0000 C CNN
+F 2 "Resistor_SMD:R_0805_2012Metric" H 8950 4600 50  0001 C CNN
+F 3 "~" H 8950 4600 50  0001 C CNN
+	1    8950 4600
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	8250 5250 8250 4600
+Wire Wire Line
+	8250 4600 8500 4600
+Wire Wire Line
+	7600 5250 8250 5250
+Wire Wire Line
+	8200 5150 8200 5700
+Wire Wire Line
+	8200 5700 8500 5700
+Wire Wire Line
+	1900 5300 2650 5300
+Wire Wire Line
+	3550 5400 3550 5300
+Connection ~ 3550 5300
+Wire Wire Line
+	3550 5500 3550 5400
+Connection ~ 3550 5400
+Wire Wire Line
+	3550 5600 3550 5500
+Connection ~ 3550 5500
+Wire Wire Line
+	4550 5400 4550 5300
+Connection ~ 4550 5300
+Wire Wire Line
+	4550 5500 4550 5400
+Connection ~ 4550 5400
+$Comp
+L power:GND #PWR0164
+U 1 1 63F20B47
+P 4550 5600
+F 0 "#PWR0164" H 4550 5350 50  0001 C CNN
+F 1 "GND" H 4555 5427 50  0000 C CNN
+F 2 "" H 4550 5600 50  0001 C CNN
+F 3 "" H 4550 5600 50  0001 C CNN
+	1    4550 5600
+	1    0    0    -1  
+$EndComp
+$EndSCHEMATC
