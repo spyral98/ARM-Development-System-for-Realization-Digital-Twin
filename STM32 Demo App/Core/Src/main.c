@@ -1057,7 +1057,7 @@ void wifi_task_entry(void *argument)
   /* USER CODE BEGIN wifi_task_entry */
 	AT_init(&huart3, &hdma_usart3_rx, wifi_taskHandle);
 
-	TS_establish_connection("Alysandratos 2.4GHz", "a1b2c3d4e5");
+	TS_establish_connection("SSID", "PASSWORD");
 
 	float buf[4] = {0};
 
@@ -1072,7 +1072,7 @@ void wifi_task_entry(void *argument)
 	  buf[2] = BME280.hum;
 	  buf[3] = BME280.temp;
 
-	  TS_send_data("13R16VK6AKMJNERT", buf, 4);
+	  TS_send_data("API_KEY", buf, 4);
 	  osDelay(15000);
   }
   /* USER CODE END wifi_task_entry */
