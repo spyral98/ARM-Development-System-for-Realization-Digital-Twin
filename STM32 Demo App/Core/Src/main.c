@@ -44,6 +44,7 @@
 #define MIC_BUF_LEN 1024
 #define CUR_BUF_LEN 1024
 #define IMU_BUF_LEN 64
+#define FSAMPLING 12000
 
 typedef enum
 {
@@ -896,15 +897,17 @@ void HAL_I2C_MemRxCpltCallback(I2C_HandleTypeDef* hi2c)
 	portYIELD_FROM_ISR( xHigherPriorityTaskWoken );
 }
 
-void compute_fft_mag(arm_rfft_fast_instance_f32* inst, float* buf_in, float* buf_out, uint32_t L)
+void compute_fft_psd(arm_rfft_fast_instance_f32* inst, float* buf_in, float* buf_out, uint32_t L, float fs)
 {
 	arm_rfft_fast_f32(inst, buf_in, buf_out, 0);
-	arm_cmplx_mag_f32(buf_out, buf_out, L);
+	arm_cmplx_mag_f32(buf_out+2, buf_out+2, L/2-1);
 
-	for (int i=1; i<L/2; i++)
-		buf_out[i] = (2.0f*buf_out[i]*buf_out[i]/L);
+	float nyquist_freq_sample = buf_out[1];
+	for (int i=2; i<=L/2; i++)
+		buf_out[i-1] = (2.0f*buf_out[i]*buf_out[i]/(L*fs));
 
-	buf_out[0] = (buf_out[0]*buf_out[0]/L);
+	buf_out[0] = (buf_out[0]*buf_out[0]/(L*fs));
+	buf_out[L/2] = (nyquist_freq_sample*nyquist_freq_sample/(L*fs));
 }
 
 
@@ -1057,7 +1060,7 @@ void wifi_task_entry(void *argument)
   /* USER CODE BEGIN wifi_task_entry */
 	AT_init(&huart3, &hdma_usart3_rx, wifi_taskHandle);
 
-	TS_establish_connection("SSID", "PASSWORD");
+	TS_establish_connection("Alysandratos 2.4GHz", "a1b2c3d4e5");
 
 	float buf[4] = {0};
 
@@ -1072,7 +1075,7 @@ void wifi_task_entry(void *argument)
 	  buf[2] = BME280.hum;
 	  buf[3] = BME280.temp;
 
-	  TS_send_data("API_KEY", buf, 4);
+	  TS_send_data("13R16VK6AKMJNERT", buf, 4);
 	  osDelay(15000);
   }
   /* USER CODE END wifi_task_entry */
@@ -1117,13 +1120,13 @@ void proc_task_entry(void *argument)
 
 		// FFT
 		memcpy(fft_mic_in_buf, mic_buf, L*sizeof(float));
-		compute_fft_mag(&adc_rfft_inst, fft_mic_in_buf, mic_fft_buf, L);
-		log_via_USB(mic_fft_buf, (L/2)*sizeof(float), LOG_MIC_FFT);
+		compute_fft_psd(&adc_rfft_inst, fft_mic_in_buf, mic_fft_buf, L, FSAMPLING);
+		log_via_USB(mic_fft_buf, (L/2+1)*sizeof(float), LOG_MIC_FFT);
 
 
 		memcpy(fft_cur_in_buf, cur_buf, L*sizeof(float));
-		compute_fft_mag(&adc_rfft_inst, fft_cur_in_buf, cur_fft_buf, L);
-		log_via_USB(cur_fft_buf, (L/2)*sizeof(float), LOG_CUR_FFT);
+		compute_fft_psd(&adc_rfft_inst, fft_cur_in_buf, cur_fft_buf, L, FSAMPLING);
+		log_via_USB(cur_fft_buf, (L/2+1)*sizeof(float), LOG_CUR_FFT);
 
 
 		adc_buf_state = BUF_EMPTY;
@@ -1145,13 +1148,13 @@ void proc_task_entry(void *argument)
 
 		// FFT
 		memcpy(fft_mic_in_buf, mic_buf + MIC_BUF_LEN/2, L*sizeof(float));
-		compute_fft_mag(&adc_rfft_inst, fft_mic_in_buf, mic_fft_buf, L);
-		log_via_USB(mic_fft_buf, (L/2)*sizeof(float), LOG_MIC_FFT);
+		compute_fft_psd(&adc_rfft_inst, fft_mic_in_buf, mic_fft_buf, L, FSAMPLING);
+		log_via_USB(mic_fft_buf, (L/2+1)*sizeof(float), LOG_MIC_FFT);
 
 
 		memcpy(fft_cur_in_buf, cur_buf + CUR_BUF_LEN/2, L*sizeof(float));
-		compute_fft_mag(&adc_rfft_inst, fft_cur_in_buf, cur_fft_buf, L);
-		log_via_USB(cur_fft_buf, (L/2)*sizeof(float), LOG_CUR_FFT);
+		compute_fft_psd(&adc_rfft_inst, fft_cur_in_buf, cur_fft_buf, L, FSAMPLING);
+		log_via_USB(cur_fft_buf, (L/2+1)*sizeof(float), LOG_CUR_FFT);
 
 		adc_buf_state = BUF_EMPTY;
 	}
@@ -1164,23 +1167,23 @@ void proc_task_entry(void *argument)
 
 		memcpy(fft_in_imu.accel_x, imu_buf[0].accel_x, sizeof(IMU_BUF));
 
-		compute_fft_mag(&imu_rfft_inst, fft_in_imu.accel_x, imu_fft_buf.accel_x, IMU_BUF_LEN);
-		log_via_USB(imu_fft_buf.accel_x, (IMU_BUF_LEN/2)*sizeof(float), LOG_ACC_X_FFT);
+		compute_fft_psd(&imu_rfft_inst, fft_in_imu.accel_x, imu_fft_buf.accel_x, IMU_BUF_LEN, FSAMPLING);
+		log_via_USB(imu_fft_buf.accel_x, (IMU_BUF_LEN/2+1)*sizeof(float), LOG_ACC_X_FFT);
 
-		compute_fft_mag(&imu_rfft_inst, fft_in_imu.accel_y, imu_fft_buf.accel_y, IMU_BUF_LEN);
-		log_via_USB(imu_fft_buf.accel_y, (IMU_BUF_LEN/2)*sizeof(float), LOG_ACC_Y_FFT);
+		compute_fft_psd(&imu_rfft_inst, fft_in_imu.accel_y, imu_fft_buf.accel_y, IMU_BUF_LEN, FSAMPLING);
+		log_via_USB(imu_fft_buf.accel_y, (IMU_BUF_LEN/2+1)*sizeof(float), LOG_ACC_Y_FFT);
 
-		compute_fft_mag(&imu_rfft_inst, fft_in_imu.accel_z, imu_fft_buf.accel_z, IMU_BUF_LEN);
-		log_via_USB(imu_fft_buf.accel_z, (IMU_BUF_LEN/2)*sizeof(float), LOG_ACC_Z_FFT);
+		compute_fft_psd(&imu_rfft_inst, fft_in_imu.accel_z, imu_fft_buf.accel_z, IMU_BUF_LEN, FSAMPLING);
+		log_via_USB(imu_fft_buf.accel_z, (IMU_BUF_LEN/2+1)*sizeof(float), LOG_ACC_Z_FFT);
 
-		compute_fft_mag(&imu_rfft_inst, fft_in_imu.gyro_x, imu_fft_buf.gyro_x, IMU_BUF_LEN);
-		log_via_USB(imu_fft_buf.gyro_x, (IMU_BUF_LEN/2)*sizeof(float), LOG_GYR_X_FFT);
+		compute_fft_psd(&imu_rfft_inst, fft_in_imu.gyro_x, imu_fft_buf.gyro_x, IMU_BUF_LEN, FSAMPLING);
+		log_via_USB(imu_fft_buf.gyro_x, (IMU_BUF_LEN/2+1)*sizeof(float), LOG_GYR_X_FFT);
 
-		compute_fft_mag(&imu_rfft_inst, fft_in_imu.gyro_y, imu_fft_buf.gyro_y, IMU_BUF_LEN);
-		log_via_USB(imu_fft_buf.gyro_y, (IMU_BUF_LEN/2)*sizeof(float), LOG_GYR_Y_FFT);
+		compute_fft_psd(&imu_rfft_inst, fft_in_imu.gyro_y, imu_fft_buf.gyro_y, IMU_BUF_LEN, FSAMPLING);
+		log_via_USB(imu_fft_buf.gyro_y, (IMU_BUF_LEN/2+1)*sizeof(float), LOG_GYR_Y_FFT);
 
-		compute_fft_mag(&imu_rfft_inst, fft_in_imu.gyro_z, imu_fft_buf.gyro_z, IMU_BUF_LEN);
-		log_via_USB(imu_fft_buf.gyro_z, (IMU_BUF_LEN/2)*sizeof(float), LOG_GYR_Z_FFT);
+		compute_fft_psd(&imu_rfft_inst, fft_in_imu.gyro_z, imu_fft_buf.gyro_z, IMU_BUF_LEN, FSAMPLING);
+		log_via_USB(imu_fft_buf.gyro_z, (IMU_BUF_LEN/2+1)*sizeof(float), LOG_GYR_Z_FFT);
 
 
 		imu_buf_state = BUF_EMPTY;
@@ -1194,23 +1197,23 @@ void proc_task_entry(void *argument)
 
 		memcpy(fft_in_imu.accel_x, imu_buf[1].accel_x, sizeof(IMU_BUF));
 
-		compute_fft_mag(&imu_rfft_inst, fft_in_imu.accel_x, imu_fft_buf.accel_x, IMU_BUF_LEN);
-		log_via_USB(imu_fft_buf.accel_x, (IMU_BUF_LEN/2)*sizeof(float), LOG_ACC_X_FFT);
+		compute_fft_psd(&imu_rfft_inst, fft_in_imu.accel_x, imu_fft_buf.accel_x, IMU_BUF_LEN, FSAMPLING);
+		log_via_USB(imu_fft_buf.accel_x, (IMU_BUF_LEN/2+1)*sizeof(float), LOG_ACC_X_FFT);
 
-		compute_fft_mag(&imu_rfft_inst, fft_in_imu.accel_y, imu_fft_buf.accel_y, IMU_BUF_LEN);
-		log_via_USB(imu_fft_buf.accel_y, (IMU_BUF_LEN/2)*sizeof(float), LOG_ACC_Y_FFT);
+		compute_fft_psd(&imu_rfft_inst, fft_in_imu.accel_y, imu_fft_buf.accel_y, IMU_BUF_LEN, FSAMPLING);
+		log_via_USB(imu_fft_buf.accel_y, (IMU_BUF_LEN/2+1)*sizeof(float), LOG_ACC_Y_FFT);
 
-		compute_fft_mag(&imu_rfft_inst, fft_in_imu.accel_z, imu_fft_buf.accel_z, IMU_BUF_LEN);
-		log_via_USB(imu_fft_buf.accel_z, (IMU_BUF_LEN/2)*sizeof(float), LOG_ACC_Z_FFT);
+		compute_fft_psd(&imu_rfft_inst, fft_in_imu.accel_z, imu_fft_buf.accel_z, IMU_BUF_LEN, FSAMPLING);
+		log_via_USB(imu_fft_buf.accel_z, (IMU_BUF_LEN/2+1)*sizeof(float), LOG_ACC_Z_FFT);
 
-		compute_fft_mag(&imu_rfft_inst, fft_in_imu.gyro_x, imu_fft_buf.gyro_x, IMU_BUF_LEN);
-		log_via_USB(imu_fft_buf.gyro_x, (IMU_BUF_LEN/2)*sizeof(float), LOG_GYR_X_FFT);
+		compute_fft_psd(&imu_rfft_inst, fft_in_imu.gyro_x, imu_fft_buf.gyro_x, IMU_BUF_LEN, FSAMPLING);
+		log_via_USB(imu_fft_buf.gyro_x, (IMU_BUF_LEN/2+1)*sizeof(float), LOG_GYR_X_FFT);
 
-		compute_fft_mag(&imu_rfft_inst, fft_in_imu.gyro_y, imu_fft_buf.gyro_y, IMU_BUF_LEN);
-		log_via_USB(imu_fft_buf.gyro_y, (IMU_BUF_LEN/2)*sizeof(float), LOG_GYR_Y_FFT);
+		compute_fft_psd(&imu_rfft_inst, fft_in_imu.gyro_y, imu_fft_buf.gyro_y, IMU_BUF_LEN, FSAMPLING);
+		log_via_USB(imu_fft_buf.gyro_y, (IMU_BUF_LEN/2+1)*sizeof(float), LOG_GYR_Y_FFT);
 
-		compute_fft_mag(&imu_rfft_inst, fft_in_imu.gyro_z, imu_fft_buf.gyro_z, IMU_BUF_LEN);
-		log_via_USB(imu_fft_buf.gyro_z, (IMU_BUF_LEN/2)*sizeof(float), LOG_GYR_Z_FFT);
+		compute_fft_psd(&imu_rfft_inst, fft_in_imu.gyro_z, imu_fft_buf.gyro_z, IMU_BUF_LEN, FSAMPLING);
+		log_via_USB(imu_fft_buf.gyro_z, (IMU_BUF_LEN/2+1)*sizeof(float), LOG_GYR_Z_FFT);
 
 
 		imu_buf_state = BUF_EMPTY;
