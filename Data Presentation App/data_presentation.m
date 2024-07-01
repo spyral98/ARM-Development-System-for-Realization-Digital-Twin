@@ -97,10 +97,10 @@ try
     set(f2,'name','Frequency Domain Plots', 'Position', [1850 50 1000 1200]);
     
     fs = 12000; % ADC sampling frequency
-    freq = fs*(0:(L/2-1))/L; % ADC frequency range
+    freq = fs*(0:L/2)/L; % ADC frequency range
     
     fs_imu = 1000; % IMU sampling frequency
-    freq_imu = fs_imu*(0:(L_imu/2-1))/L_imu; % IMU frequency range
+    freq_imu = fs_imu*(0:L_imu/2)/L_imu; % IMU frequency range
     
     % Creating the split plots 
     mic_fft_plot = subplot(4,2,1);
@@ -113,80 +113,80 @@ try
     gyro_z_fft_plot = subplot(4,2,8);
     
     % Plotting the FFT data
-    mic_fft_data = zeros([1,L/2]);
+    mic_fft_data = zeros([1,L/2+1]);
     plot(mic_fft_plot, freq, mic_fft_data);
     title(mic_fft_plot, "Microphone PSD");
     ylabel(mic_fft_plot, "PSD    [dB]");
     xlabel(mic_fft_plot, "Frequency [Hz]");
-    ylim(mic_fft_plot, [-30,30]);
-    yticks(mic_fft_plot, -30:10:30);
+    ylim(mic_fft_plot, [-60,0]);
+    yticks(mic_fft_plot, -60:10:0);
     xlim(mic_fft_plot, [0,fs/2]);
     
-    cur_fft_data = zeros([1,L/2]);
+    cur_fft_data = zeros([1,L/2+1]);
     plot(cur_fft_plot, freq, cur_fft_data);
     title(cur_fft_plot, "Motor Current PSD");
     ylabel(cur_fft_plot, "PSD    [dB]");
     xlabel(cur_fft_plot, "Frequency [Hz]");
-    ylim(cur_fft_plot, [-30,30]);
-    yticks(cur_fft_plot, -30:10:30);
+    ylim(cur_fft_plot, [-60,0]);
+    yticks(cur_fft_plot, -60:10:0);
     xlim(cur_fft_plot, [0,fs/2]);
     
     % Plotting of the IMU FFT data
-    acc_x_fft_data = zeros([1,L_imu/2]);
+    acc_x_fft_data = zeros([1,L_imu/2+1]);
     stem(acc_x_fft_plot, freq_imu, acc_x_fft_data,'filled','BaseValue',-inf, 'MarkerSize',5);
     title(acc_x_fft_plot, "Acceleration - X axis PSD");
     ylabel(acc_x_fft_plot, "PSD    [dB]");
     xlabel(acc_x_fft_plot, "Frequency [Hz]");
-    ylim(acc_x_fft_plot, [-30,30]);
-    yticks(acc_x_fft_plot, -30:10:30);
+    ylim(acc_x_fft_plot, [-60,0]);
+    yticks(acc_x_fft_plot, -60:10:0);
     xlim(acc_x_fft_plot, [0,fs_imu/2]);
     
-    acc_y_fft_data = zeros([1,L_imu/2]);
+    acc_y_fft_data = zeros([1,L_imu/2+1]);
     stem(acc_y_fft_plot, freq_imu, acc_y_fft_data,'filled','BaseValue',-inf, 'MarkerSize',5);
     title(acc_y_fft_plot, "Acceleration - Y axis PSD");
     ylabel(acc_y_fft_plot, "PSD    [dB]");
     xlabel(acc_y_fft_plot, "Frequency [Hz]");
-    ylim(acc_y_fft_plot, [-30,30]);
-    yticks(acc_y_fft_plot, -30:10:30);
+    ylim(acc_y_fft_plot, [-60,0]);
+    yticks(acc_y_fft_plot, -60:10:0);
     xlim(acc_y_fft_plot, [0,fs_imu/2]);
     
-    acc_z_fft_data = zeros([1,L_imu/2]);
+    acc_z_fft_data = zeros([1,L_imu/2+1]);
     stem(acc_z_fft_plot, freq_imu, acc_z_fft_data,'filled','BaseValue',-inf, 'MarkerSize',5);
     title(acc_z_fft_plot, "Acceleration - Z axis PSD");
     ylabel(acc_z_fft_plot, "PSD    [dB]");
     xlabel(acc_z_fft_plot, "Frequency [Hz]");
-    ylim(acc_z_fft_plot, [-30,30]);
-    yticks(acc_z_fft_plot, -30:10:30);
+    ylim(acc_z_fft_plot, [-60,0]);
+    yticks(acc_z_fft_plot, -60:10:0);
     xlim(acc_z_fft_plot, [0,fs_imu/2]);
     
-    gyro_x_fft_data = zeros([1,L_imu/2]);
+    gyro_x_fft_data = zeros([1,L_imu/2+1]);
     stem(gyro_x_fft_plot, freq_imu, gyro_x_fft_data,'filled','BaseValue',-inf, 'MarkerSize',5);
     title(gyro_x_fft_plot, "Angular Velocity - X axis PSD");
     ylabel(gyro_x_fft_plot, "PSD    [dB]");
     xlabel(gyro_x_fft_plot, "Frequency [Hz]");
-    ylim(gyro_x_fft_plot, [-30,30]);
-    yticks(gyro_x_fft_plot, -30:10:30);
+    ylim(gyro_x_fft_plot, [-60,0]);
+    yticks(gyro_x_fft_plot, -60:10:0);
     xlim(gyro_x_fft_plot, [0,fs_imu/2]);
     
-    gyro_y_fft_data = zeros([1,L_imu/2]);
+    gyro_y_fft_data = zeros([1,L_imu/2+1]);
     stem(gyro_y_fft_plot, freq_imu, gyro_y_fft_data, "filled",'BaseValue',-inf, 'MarkerSize',5);
     title(gyro_y_fft_plot, "Angular Velocity - Y axis PSD");
     ylabel(gyro_y_fft_plot, "PSD    [dB]");
     xlabel(gyro_y_fft_plot, "Frequency [Hz]");
-    ylim(gyro_y_fft_plot, [-30,30]);
-    yticks(gyro_y_fft_plot, -30:10:30);
+    ylim(gyro_y_fft_plot, [-60,0]);
+    yticks(gyro_y_fft_plot, -60:10:0);
     xlim(gyro_y_fft_plot, [0,fs_imu/2]);
     
-    gyro_z_fft_data = zeros([1,L_imu/2]);
+    gyro_z_fft_data = zeros([1,L_imu/2+1]);
     stem(gyro_z_fft_plot, freq_imu, gyro_z_fft_data, "filled",'BaseValue',-inf, 'MarkerSize',5);
     title(gyro_z_fft_plot, "Angular Velocity - Z axis PSD");
     ylabel(gyro_z_fft_plot, "PSD    [dB]");
     xlabel(gyro_z_fft_plot, "Frequency [Hz]");
-    ylim(gyro_z_fft_plot, [-30,30]);
-    yticks(gyro_z_fft_plot, -30:10:30);
+    ylim(gyro_z_fft_plot, [-60,0]);
+    yticks(gyro_z_fft_plot, -60:10:0);
     xlim(gyro_z_fft_plot, [0,fs_imu/2]);
     
-    s = serialport("COM3", 115200); % Opening serial port with the given baurate
+    s = serialport("COM9", 115200); % Opening serial port with the given baurate
     flush(s);
     pause(0.01);
     
@@ -233,42 +233,42 @@ try
            
         % Microphone FFT data
         elseif id == 'M'
-            mic_fft_data = read(s,L/2,"single");
+            mic_fft_data = read(s,L/2+1,"single");
             mic_fft_plot.Children.YData = 10*log10(mic_fft_data);
             
         % Current FFT data
         elseif id == 'C'
-            cur_fft_data = read(s,L/2,"single");
+            cur_fft_data = read(s,L/2+1,"single");
             cur_fft_plot.Children.YData = 10*log10(cur_fft_data);
             
         % IMU (Accelerometer X) FFT data    
         elseif id == '1'
-            acc_x_fft_data = read(s,L_imu/2,"single");
+            acc_x_fft_data = read(s,L_imu/2+1,"single");
             acc_x_fft_plot.Children.YData = 10*log10(acc_x_fft_data);
             
         % IMU (Accelerometer Y) FFT data    
         elseif id == '2'
-            acc_y_fft_data = read(s,L_imu/2,"single");
+            acc_y_fft_data = read(s,L_imu/2+1,"single");
             acc_y_fft_plot.Children.YData = 10*log10(acc_y_fft_data);
             
         % IMU (Accelerometer Z) FFT data    
         elseif id == '3'
-            acc_z_fft_data = read(s,L_imu/2,"single");
+            acc_z_fft_data = read(s,L_imu/2+1,"single");
             acc_z_fft_plot.Children.YData = 10*log10(acc_z_fft_data);
             
         % IMU (Gyroscope X) FFT data
         elseif id == '4'
-            gyro_x_fft_data = read(s,L_imu/2,"single");
+            gyro_x_fft_data = read(s,L_imu/2+1,"single");
             gyro_x_fft_plot.Children.YData = 10*log10(gyro_x_fft_data);
             
         % IMU (Gyroscope Y) FFT data    
         elseif id == '5'
-            gyro_y_fft_data = read(s,L_imu/2,"single");
+            gyro_y_fft_data = read(s,L_imu/2+1,"single");
             gyro_y_fft_plot.Children.YData = 10*log10(gyro_y_fft_data);
             
         % IMU (Gyroscope Z) FFT data    
         elseif id == '6'
-            gyro_z_fft_data = read(s,L_imu/2,"single");
+            gyro_z_fft_data = read(s,L_imu/2+1,"single");
             gyro_z_fft_plot.Children.YData = 10*log10(gyro_z_fft_data);
         end 
     end
